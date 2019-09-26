@@ -34,7 +34,7 @@ class CapturaList extends Component {
           <div>
         <UsersToolbar />
         <div>
-          <CapturaTable capturas={this.state.capturas} />
+          <CapturaTable capturas={this.state.capturas} getCapturas={this.getCapturas} />
         </div>
         </div>
         )}

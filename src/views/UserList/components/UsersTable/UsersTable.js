@@ -8,7 +8,6 @@ import {
   CardActions,
   CardContent,
   Avatar,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -84,6 +83,7 @@ const UsersTable = props => {
   // };
 
   const handlePageChange = (event, page) => {
+    setSelectedUsers(page);
     setPage(page);
   };
 
@@ -118,6 +118,7 @@ const UsersTable = props => {
                   <TableCell>Correo Electronico</TableCell>
                   <TableCell>ID Foldscope</TableCell>
                   <TableCell>País</TableCell>
+                  <TableCell>Plataforma</TableCell>
                   <TableCell>Estado</TableCell>
                 </TableRow>
               </TableHead>
@@ -155,6 +156,9 @@ const UsersTable = props => {
                     </TableCell>
                     <TableCell>
                       {user.pais}
+                    </TableCell>
+                    <TableCell>
+                      {(user.role === 'ADMIN_ROLE') ? <p>BackOffice</p> : <p>APP MOVIL</p>}
                     </TableCell>
                     <TableCell>
                       {user.activo ? <p>Activo</p> : <p>Inactivo</p>}

@@ -10,6 +10,8 @@ import {
   UserList as UserListView,
   CapturaList as CapturaListView,
   TutorialList as TutorialListView,
+  EstadoCapturaList as EstadoCapturaListView,
+  TipoUsuarioList as TipoUsuarioListView,
   Typography as TypographyView,
   Icons as IconsView,
   Account as AccountView,
@@ -20,86 +22,117 @@ import {
 } from './views';
 
 const Routes = () => {
+  if(localStorage.getItem("login")){
+
+    return (
+      <Switch>
+        <Redirect
+          exact
+          from="/"
+          to="/dashboard"
+        />
+        <RouteWithLayout
+          component={DashboardView}
+          exact
+          layout={MainLayout}
+          path="/dashboard"
+        />
+        <RouteWithLayout
+          component={UserListView}
+          exact
+          layout={MainLayout}
+          path="/users"
+        />
+        <RouteWithLayout
+          component={CapturaListView}
+          exact
+          layout={MainLayout}
+          path="/capturas"
+        />
+        <RouteWithLayout
+          component={TutorialListView}
+          exact
+          layout={MainLayout}
+          path="/tutoriales"
+        />
+        <RouteWithLayout
+          component={EstadoCapturaListView}
+          exact
+          layout={MainLayout}
+          path="/estadoCaptura"
+        />
+        <RouteWithLayout
+          component={TipoUsuarioListView}
+          exact
+          layout={MainLayout}
+          path="/tipoUsuario"
+        />
+        <RouteWithLayout
+          component={ProductListView}
+          exact
+          layout={MainLayout}
+          path="/products"
+        />
+        <RouteWithLayout
+          component={TypographyView}
+          exact
+          layout={MainLayout}
+          path="/typography"
+        />
+        <RouteWithLayout
+          component={IconsView}
+          exact
+          layout={MainLayout}
+          path="/icons"
+        />
+        <RouteWithLayout
+          component={AccountView}
+          exact
+          layout={MainLayout}
+          path="/account"
+        />
+        <RouteWithLayout
+          component={SettingsView}
+          exact
+          layout={MainLayout}
+          path="/settings"
+        />
+        <RouteWithLayout
+          component={SignUpView}
+          exact
+          layout={MinimalLayout}
+          path="/sign-up"
+        />
+        <RouteWithLayout
+          component={NotFoundView}
+          exact
+          layout={MinimalLayout}
+          path="/not-found"
+        />
+        <Redirect
+          exact
+          from="/login"
+          to="/dashboard"
+        />
+        <Redirect to="/not-found" />
+      </Switch>
+    );
+  }
+
   return (
     <Switch>
       <Redirect
-        exact
-        from="/"
-        to="/dashboard"
-      />
-      <RouteWithLayout
-        component={DashboardView}
-        exact
-        layout={MainLayout}
-        path="/dashboard"
-      />
-      <RouteWithLayout
-        component={UserListView}
-        exact
-        layout={MainLayout}
-        path="/users"
-      />
-      <RouteWithLayout
-        component={CapturaListView}
-        exact
-        layout={MainLayout}
-        path="/capturas"
-      />
-      <RouteWithLayout
-        component={TutorialListView}
-        exact
-        layout={MainLayout}
-        path="/tutoriales"
-      />
-      <RouteWithLayout
-        component={ProductListView}
-        exact
-        layout={MainLayout}
-        path="/products"
-      />
-      <RouteWithLayout
-        component={TypographyView}
-        exact
-        layout={MainLayout}
-        path="/typography"
-      />
-      <RouteWithLayout
-        component={IconsView}
-        exact
-        layout={MainLayout}
-        path="/icons"
-      />
-      <RouteWithLayout
-        component={AccountView}
-        exact
-        layout={MainLayout}
-        path="/account"
-      />
-      <RouteWithLayout
-        component={SettingsView}
-        exact
-        layout={MainLayout}
-        path="/settings"
-      />
-      <RouteWithLayout
-        component={SignUpView}
-        exact
-        layout={MinimalLayout}
-        path="/sign-up"
-      />
-      <RouteWithLayout
-        component={SignInView}
-        exact
-        layout={MinimalLayout}
-        path="/sign-in"
-      />
-      <RouteWithLayout
-        component={NotFoundView}
-        exact
-        layout={MinimalLayout}
-        path="/not-found"
-      />
-      <Redirect to="/not-found" />
+          exact
+          from="/"
+          to="/login"
+        />
+        <RouteWithLayout
+          component={SignInView}
+          exact
+          layout={MinimalLayout}
+          path="/login"
+        />
+      <Redirect to="/login" />
     </Switch>
   );
 };

@@ -20,10 +20,8 @@ import {
   TablePagination
 } from '@material-ui/core';
 import axios from 'axios';
-// import { getInitials } from '../../../../helpers';
 import Modal from '@material-ui/core/Modal';
-import ModalImage from "react-modal-image";
-import EditTutorial from '../../EditTutorial';
+import EditEstadoCaptura from '../../EditEstadoCaptura';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -75,7 +73,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TutorialTable = props => {
+const EstadoCapturaTable = props => {
   const { className, tutoriales,getCapturas,activos, setEdit, ...rest } = props;
 
   const classes = useStyles();
@@ -122,7 +120,7 @@ const TutorialTable = props => {
   };
 
   const handleClickDelete = () => {
-    axios.delete('http://vm.integralit.cl:13151/api/tutoriales/'+idEdit)
+    axios.delete('http://vm.integralit.cl:13151/api/EstadoCaptura/'+idEdit)
       .then(res => {
         console.log(res);
         handleCloseDialog();
@@ -158,11 +156,7 @@ const TutorialTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Titulo</TableCell>
-                  <TableCell>Descripción</TableCell>
-                  <TableCell>Imagen</TableCell>
-                  <TableCell>Video URL</TableCell>
-                  <TableCell>Duración</TableCell>
+                  <TableCell>Nombre</TableCell>
                   <TableCell>Estado</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
@@ -174,31 +168,13 @@ const TutorialTable = props => {
                     hover
                     key={tutorial._id}
                   >
-
+                    
                     <TableCell>
                       <div className={classes.nameContainer}>
                         <Typography variant="body1">{tutorial.nombre} </Typography>
                       </div>
                     </TableCell>
-                    <TableCell>
-                    <Typography variant="body1">{tutorial.descripcion}</Typography>
-                    </TableCell>
 
-                    <TableCell>
-                      <ModalImage
-                        className={classes.imgSmall}
-                        small={tutorial.link}
-                        large={tutorial.link}
-                        alt="Hello World!"
-                      />
-
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body1">{tutorial.videoId}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body1">{tutorial.duracion}</Typography>
-                    </TableCell>
                     <TableCell>
                       {tutorial.activo ? <p>Activo</p> : <p>Inactivo</p>}
                     </TableCell>
@@ -236,7 +212,7 @@ const TutorialTable = props => {
         onClose={handleClose}
       >
         <div style={modalStyle} className={classes.paper}>
-          <EditTutorial cancelBtn={handleClose} tutorial={tuto} />
+          <EditEstadoCaptura cancelBtn={handleClose} tutorial={tuto} />
         </div>
       </Modal>
 
@@ -247,10 +223,10 @@ const TutorialTable = props => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"¿Esta seguro de eliminar este tutorial?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"¿Esta seguro de eliminar este estado de captura?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Al eliminar el tutorial, este quedara inactivo y no sera visible
+            Al eliminar el estado de captura, este quedara inactivo y no sera visible
             en la aplicación movil.
           </DialogContentText>
         </DialogContent>
@@ -269,9 +245,9 @@ const TutorialTable = props => {
   );
 };
 
-TutorialTable.propTypes = {
+EstadoCapturaTable.propTypes = {
   className: PropTypes.string,
   tutoriales: PropTypes.array.isRequired
 };
 
-export default TutorialTable;
+export default EstadoCapturaTable;

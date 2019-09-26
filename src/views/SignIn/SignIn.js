@@ -6,14 +6,10 @@ import { makeStyles } from '@material-ui/styles';
 import {
   Grid,
   Button,
-  IconButton,
   TextField,
-  Link,
-  Typography
+  Typography, Link
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
-import { Facebook as FacebookIcon, Google as GoogleIcon } from '../../icons';
+import axios from 'axios';
 
 const schema = {
   email: {
@@ -147,9 +143,9 @@ const SignIn = props => {
     }));
   }, [formState.values]);
 
-  const handleBack = () => {
-    history.goBack();
-  };
+  // const handleBack = () => {
+  //   history.goBack();
+  // };
 
   const handleChange = event => {
     event.persist();
@@ -172,7 +168,24 @@ const SignIn = props => {
 
   const handleSignIn = event => {
     event.preventDefault();
-    history.push('/');
+    
+    const data = {
+      email: formState.values.email,
+      password: formState.values.password
+    }
+    axios.post('http://vm.integralit.cl:13151/api/backoffice/login', data)
+      .then(res => {
+        localStorage.setItem("login", true);
+        window.location.reload();
+        history.push('/');
+        console.log(res);
+      })
+      .catch(err => {
+        localStorage.removeItem("login");
+        console.log(err);
+      });
+
+    // history.push('/');
   };
 
   const hasError = field =>
@@ -195,21 +208,21 @@ const SignIn = props => {
                 className={classes.quoteText}
                 variant="h1"
               >
-                Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
-                they sold out High Life.
+                Dedicados al monitoreo de floraciones algales nocivas
+                mediante ciencia ciudadana y tecnología de bajo costo.
               </Typography>
               <div className={classes.person}>
                 <Typography
                   className={classes.name}
                   variant="body1"
                 >
-                  Takamaru Ayako
+                  MicroToxMap
                 </Typography>
                 <Typography
                   className={classes.bio}
                   variant="body2"
                 >
-                  Manager at inVision
+                  MTM
                 </Typography>
               </div>
             </div>
@@ -222,11 +235,11 @@ const SignIn = props => {
           xs={12}
         >
           <div className={classes.content}>
-            <div className={classes.contentHeader}>
+            {/* <div className={classes.contentHeader}>
               <IconButton onClick={handleBack}>
                 <ArrowBackIcon />
               </IconButton>
-            </div>
+            </div> */}
             <div className={classes.contentBody}>
               <form
                 className={classes.form}
@@ -236,15 +249,15 @@ const SignIn = props => {
                   className={classes.title}
                   variant="h2"
                 >
-                  Sign in
+                  Ingresar
                 </Typography>
-                <Typography
+                {/* <Typography
                   color="textSecondary"
                   gutterBottom
                 >
                   Sign in with social media
-                </Typography>
-                <Grid
+                </Typography> */}
+                {/* <Grid
                   className={classes.socialButtons}
                   container
                   spacing={2}
@@ -270,15 +283,15 @@ const SignIn = props => {
                       Login with Google
                     </Button>
                   </Grid>
-                </Grid>
-                <Typography
+                </Grid> */}
+                {/* <Typography
                   align="center"
                   className={classes.sugestion}
                   color="textSecondary"
-                  variant="body1"
+                  gutterBottom
                 >
                   or login with email address
-                </Typography>
+                </Typography> */}
                 <TextField
                   className={classes.textField}
                   error={hasError('email')}
@@ -286,7 +299,7 @@ const SignIn = props => {
                   helperText={
                     hasError('email') ? formState.errors.email[0] : null
                   }
-                  label="Email address"
+                  label="Correo Electronico"
                   name="email"
                   onChange={handleChange}
                   type="text"
@@ -300,7 +313,7 @@ const SignIn = props => {
                   helperText={
                     hasError('password') ? formState.errors.password[0] : null
                   }
-                  label="Password"
+                  label="Contraseña"
                   name="password"
                   onChange={handleChange}
                   type="password"
@@ -316,19 +329,19 @@ const SignIn = props => {
                   type="submit"
                   variant="contained"
                 >
-                  Sign in now
+                  Iniciar Sesión
                 </Button>
                 <Typography
                   color="textSecondary"
                   variant="body1"
                 >
-                  Don't have an account?{' '}
+                  ¿Olvidaste tu contraseña?{' '}
                   <Link
                     component={RouterLink}
                     to="/sign-up"
                     variant="h6"
                   >
-                    Sign up
+                    Contactarse con soporte
                   </Link>
                 </Typography>
               </form>

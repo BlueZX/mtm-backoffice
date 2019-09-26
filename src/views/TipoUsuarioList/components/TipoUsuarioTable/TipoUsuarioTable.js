@@ -22,8 +22,7 @@ import {
 import axios from 'axios';
 // import { getInitials } from '../../../../helpers';
 import Modal from '@material-ui/core/Modal';
-import ModalImage from "react-modal-image";
-import EditTutorial from '../../EditTutorial';
+import EditTipoUsuario from '../../EditTipoUsuario';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -75,7 +74,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TutorialTable = props => {
+const TipoUsuarioTable = props => {
   const { className, tutoriales,getCapturas,activos, setEdit, ...rest } = props;
 
   const classes = useStyles();
@@ -158,11 +157,8 @@ const TutorialTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Titulo</TableCell>
-                  <TableCell>Descripción</TableCell>
-                  <TableCell>Imagen</TableCell>
-                  <TableCell>Video URL</TableCell>
-                  <TableCell>Duración</TableCell>
+                  <TableCell>Nombre</TableCell>
+                  <TableCell>Nombre padre</TableCell>
                   <TableCell>Estado</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
@@ -181,24 +177,9 @@ const TutorialTable = props => {
                       </div>
                     </TableCell>
                     <TableCell>
-                    <Typography variant="body1">{tutorial.descripcion}</Typography>
+                    <Typography variant="body1">{tutorial.tipoUsuario ? tutorial.tipoUsuario.nombre : ' - '}</Typography>
                     </TableCell>
 
-                    <TableCell>
-                      <ModalImage
-                        className={classes.imgSmall}
-                        small={tutorial.link}
-                        large={tutorial.link}
-                        alt="Hello World!"
-                      />
-
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body1">{tutorial.videoId}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body1">{tutorial.duracion}</Typography>
-                    </TableCell>
                     <TableCell>
                       {tutorial.activo ? <p>Activo</p> : <p>Inactivo</p>}
                     </TableCell>
@@ -236,7 +217,7 @@ const TutorialTable = props => {
         onClose={handleClose}
       >
         <div style={modalStyle} className={classes.paper}>
-          <EditTutorial cancelBtn={handleClose} tutorial={tuto} />
+          <EditTipoUsuario cancelBtn={handleClose} tutorial={tuto} />
         </div>
       </Modal>
 
@@ -269,9 +250,9 @@ const TutorialTable = props => {
   );
 };
 
-TutorialTable.propTypes = {
+TipoUsuarioTable.propTypes = {
   className: PropTypes.string,
   tutoriales: PropTypes.array.isRequired
 };
 
-export default TutorialTable;
+export default TipoUsuarioTable;

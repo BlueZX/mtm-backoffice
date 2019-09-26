@@ -20,6 +20,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const handleSignOut = () => {
+  localStorage.removeItem("login");
+  window.location.reload();
+} 
+
 const Topbar = props => {
   const { className, onSidebarOpen, ...rest } = props;
 
@@ -36,7 +41,8 @@ const Topbar = props => {
         <RouterLink to="/">
           <img
             alt="Logo"
-            src="/images/logos/logo--white.svg"
+            src="/images/logos/logo-white.png"
+            height="40"
           />
         </RouterLink>
         <div className={classes.flexGrow} />
@@ -53,6 +59,7 @@ const Topbar = props => {
           <IconButton
             className={classes.signOutButton}
             color="inherit"
+            onClick={handleSignOut}
           >
             <InputIcon />
           </IconButton>

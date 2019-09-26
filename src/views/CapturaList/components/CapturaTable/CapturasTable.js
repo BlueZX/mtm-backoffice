@@ -7,7 +7,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  Avatar,
   Table,
   TableBody,
   TableCell,
@@ -16,9 +15,16 @@ import {
   Typography,
   TablePagination
 } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import DoneIcon from '@material-ui/icons/Done';
+import IconButton from '@material-ui/core/IconButton';
 
 // import { getInitials } from '../../../../helpers';
+import Modal from '@material-ui/core/Modal';
 import ModalImage from "react-modal-image";
+
+import CambiarEstado from '../../CambiarEstado';
+// import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -41,17 +47,40 @@ const useStyles = makeStyles(theme => ({
   imgSmall: {
     width: 32,
     height: 42
-  }
+  },
+  paper: {
+    position: 'absolute',
+    width: 80+'%',
+    maxHeight: 80+'%',
+    overflow:'scroll',
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 }));
 
+const getModalStyle = () => {
+  const top = 50 ;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
 const CapturasTable = props => {
-  const { className, capturas, ...rest } = props;
+  const { className, capturas, getCapturas,  ...rest } = props;
 
   const classes = useStyles();
 
-  const [selectedcapturas, setSelectedcapturas] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
+  const [open, setOpen] = React.useState(false);
+  const [cap, setCap] = React.useState({});
+  const [modalStyle] = React.useState(getModalStyle);
 
   const handlePageChange = (event, page) => {
     setPage(page);
@@ -59,6 +88,21 @@ const CapturasTable = props => {
 
   const handleRowsPerPageChange = event => {
     setRowsPerPage(event.target.value);
+  };
+
+  const handleChange = (e, captura) => {
+    console.log(captura);
+    setCap(captura);
+    handleOpen();
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    getCapturas();
+    setOpen(false);
   };
 
   return (
@@ -94,7 +138,7 @@ const CapturasTable = props => {
                       </div>
                     </TableCell>
                     <TableCell>
-                    <Typography variant="body1">{Date(captura.selectedDate)}</Typography>
+                    <Typography variant="body1">{captura.selectedDate}</Typography>
                     </TableCell>
 
                     <TableCell>
@@ -103,7 +147,7 @@ const CapturasTable = props => {
                         className={classes.imgSmall}
                         small={`data:${captura.filePath.type};base64,${captura.filePath.data}`}
                         large={`data:${captura.filePath.type};base64,${captura.filePath.data}`}
-                        alt="Hello World!"
+                        alt={captura._id}
                       />
                     </TableCell>
                     <TableCell>
@@ -112,8 +156,15 @@ const CapturasTable = props => {
                       })}
                     </TableCell>
                     <TableCell>
-                      {captura.activo ? <p>Activo</p> : <p>Inactivo</p>}
+                      {/* {captura.activo ? <p>Activo</p> : <p>Inactivo</p>} */}
+                      {captura.estado.nombre}
                     </TableCell>
+                    <IconButton aria-label="edit" >
+                      <DoneIcon onClick={ (e) => { handleChange(e, captura) }}/>
+                    </IconButton>
+                    <IconButton aria-label="delete" >
+                      <DeleteIcon />
+                    </IconButton>
                   </TableRow>
                 ))}
               </TableBody>
@@ -132,6 +183,20 @@ const CapturasTable = props => {
           rowsPerPageOptions={[5, 10, 25]}
         />
       </CardActions>
+
+
+
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={open}
+        onClose={handleClose}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <CambiarEstado cancelBtn={handleClose} captura={cap} />
+        </div>
+      </Modal>
+
     </Card>
   );
 };

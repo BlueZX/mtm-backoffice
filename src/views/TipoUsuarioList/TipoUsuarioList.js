@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import { UsersToolbar, TutorialTable } from './components';
-import AddTutorial from './addTutorial';
+import { UsersToolbar, TipoUsuarioTable } from './components';
+import AddTipoUsuario from './addTipoUsuario';
 import axios from 'axios';
 
-class TutorialList extends Component {
+class TipoUsuarioList extends Component {
 
   
   state = {
@@ -36,20 +36,20 @@ class TutorialList extends Component {
     console.log(checked);
     if(checked){
 
-      axios.get('http://vm.integralit.cl:13151/api/tutoriales')
+      axios.get('http://vm.integralit.cl:13151/api/tipoUsuario')
       .then(res => {
         console.log(res.data);
-        this.setState({tutoriales: res.data.tutoriales });
+        this.setState({tutoriales: res.data.tipoUsuarios });
       })
       .catch(err => {
         console.log(err);
       });
 
     }else{
-      axios.get('http://vm.integralit.cl:13151/api/all/tutoriales')
+      axios.get('http://vm.integralit.cl:13151/api/all/tipoUsuario')
       .then(res => {
         console.log(res.data);
-        this.setState({tutoriales: res.data.tutoriales });
+        this.setState({tutoriales: res.data.tipoUsuarios });
       })
       .catch(err => {
         console.log(err);
@@ -61,20 +61,20 @@ class TutorialList extends Component {
   getCapturas = () => {
     if(this.state.activos){
 
-      axios.get('http://vm.integralit.cl:13151/api/tutoriales')
+      axios.get('http://vm.integralit.cl:13151/api/tipoUsuario')
       .then(res => {
         console.log(res.data);
-        this.setState({tutoriales: res.data.tutoriales });
+        this.setState({tutoriales: res.data.tipoUsuarios });
       })
       .catch(err => {
         console.log(err);
       });
 
     }else{
-      axios.get('http://vm.integralit.cl:13151/api/all/tutoriales')
+      axios.get('http://vm.integralit.cl:13151/api/all/tipoUsuario')
       .then(res => {
         console.log(res.data);
-        this.setState({tutoriales: res.data.tutoriales });
+        this.setState({tutoriales: res.data.tipoUsuarios });
       })
       .catch(err => {
         console.log(err);
@@ -91,11 +91,11 @@ class TutorialList extends Component {
             <UsersToolbar />
             Cargando ...
           </div>
-        ) : (this.state.adding ? <AddTutorial adding={this.changeAdding} /> : (
+        ) : (this.state.adding ? <AddTipoUsuario adding={this.changeAdding} /> : (
           <div>
             <UsersToolbar adding={this.changeAdding} activos={this.changeActivos} />
             <div>
-              <TutorialTable tutoriales={this.state.tutoriales} getCapturas={this.getCapturas} activos={this.state.activos} />
+              <TipoUsuarioTable tutoriales={this.state.tutoriales} getCapturas={this.getCapturas} activos={this.state.activos} />
             </div>
           </div>
         ))}
@@ -104,4 +104,4 @@ class TutorialList extends Component {
   }
 }
 
-export default TutorialList;
+export default TipoUsuarioList;

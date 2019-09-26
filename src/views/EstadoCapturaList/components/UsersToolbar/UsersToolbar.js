@@ -57,13 +57,13 @@ const UsersToolbar = props => {
           variant="contained"
           onClick={adding}
         >
-          Añadir Tutorial
+          Añadir Estado de captura
         </Button>
       </div>
       <div className={classes.row}>
         <SearchInput
           className={classes.searchInput}
-          placeholder="Buscar tutorial"
+          placeholder="Buscar Estado de captura"
           onChange={() => {console.log("click")}}
         />
         <FormControlLabel

@@ -10,3 +10,5 @@ export { default as Typography } from './Typography';
 export { default as UserList } from './UserList';
 export { default as CapturaList } from './CapturaList';
 export { default as TutorialList } from './TutorialList';
+export { default as EstadoCapturaList } from './EstadoCapturaList';
+export { default as TipoUsuarioList } from './TipoUsuarioList';

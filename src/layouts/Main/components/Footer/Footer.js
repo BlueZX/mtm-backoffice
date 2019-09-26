@@ -24,16 +24,15 @@ const Footer = props => {
         &copy;{' '}
         <Link
           component="a"
-          href="https://devias.io/"
+          href="https://microtoxmap.com/"
           target="_blank"
         >
-          Devias IO
+          MicroToxMap
         </Link>
         . 2019
       </Typography>
       <Typography variant="caption">
-        Created with love for the environment. By designers and developers who
-        love to work together in offices!
+        Creado por Integral IT 
       </Typography>
     </div>
   );
