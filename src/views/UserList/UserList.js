@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { UsersToolbar, UsersTable } from './components';
 import axios from 'axios';
+import AddUser from './AddUser';
 
 /*
 const UserList = () => {
@@ -34,18 +35,95 @@ class UserList extends Component {
 
   
   state = {
-    usuarios: []
+    init: [],
+    usuarios: [],
+    adding: false,
+    activos: true,
   };
   
   getUser = () => {
-    axios.get('http://vm.integralit.cl:13151/api/usuario/')
+    if(this.state.activos){
+      axios.get('http://vm.integralit.cl:13151/api/usuario/')
+        .then(res => {
+          console.log(res.data);
+          this.setState({
+            init: res.data.usuarios,
+            usuarios: res.data.usuarios 
+          });
+
+        });
+    }
+    else{
+      axios.get('http://vm.integralit.cl:13151/api/all/usuario/')
+        .then(res => {
+          console.log(res.data);
+          this.setState({
+            init: res.data.usuarios,
+            usuarios: res.data.usuarios 
+          });
+
+        });
+    }
+  }
+
+  changeAdding = () => {
+    this.setState({
+      adding: !(this.state.adding)
+    });
+    this.getUser();
+  }
+
+  componentDidMount = () => {
+    this.setState({
+      activos: true
+    });
+    this.getUser();
+  }
+
+  changeActivos = (checked) => {
+    this.setState({
+      activos: checked
+    });
+    
+    console.log(checked);
+    if(checked){
+
+      axios.get('http://vm.integralit.cl:13151/api/usuario')
       .then(res => {
         console.log(res.data);
-        this.setState({usuarios: res.data.usuarios });
+        this.setState({
+            init: res.data.usuarios,
+            usuarios: res.data.usuarios 
+        });
+      })
+      .catch(err => {
+        console.log(err);
       });
+
+    }else{
+      axios.get('http://vm.integralit.cl:13151/api/all/usuario')
+      .then(res => {
+        console.log(res.data);
+        this.setState({
+          init: res.data.usuarios,
+          usuarios: res.data.usuarios 
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
   }
-  componentDidMount = () => {
-    this.getUser();
+
+  onSearch = (event) => {
+    console.log('buscando '+ event.target.value);
+
+      let updatedList = this.state.init;
+
+      updatedList = updatedList.filter((item) => {
+        return item.nick.toLowerCase().search(event.target.value.toLowerCase()) !== -1;
+      });
+      this.setState({usuarios: updatedList});
   }
 
   render() {
@@ -55,19 +133,37 @@ class UserList extends Component {
       <div>
         {this.state.usuarios.length === 0 ? (
           <div>
-            <UsersToolbar />
-            Cargando ...
+            <UsersToolbar adding={this.changeAdding} activos={this.changeActivos} onSearch={this.onSearch} />
+            Sin resultados
           </div>
-        ) : (
+        ) : (this.state.adding ? <AddUser adding={this.changeAdding} /> : (
           <div>
-        <UsersToolbar />
-        <div>
-          <UsersTable users={this.state.usuarios} />
-        </div>
-        </div>
-        )}
+            <UsersToolbar adding={this.changeAdding} onSearch={this.onSearch} activos={this.changeActivos}/>
+            <div>
+              <UsersTable users={this.state.usuarios} getUsuarios={this.getUser} activos={this.state.activos} />
+            </div>
+          </div>
+        ))}
       </div>
     );
+
+    // return (
+    //   <div>
+    //     {this.state.usuarios.length === 0 ? (
+    //       <div>
+    //         <UsersToolbar />
+    //         Cargando ...
+    //       </div>
+    //     ) : (
+    //       <div>
+    //     <UsersToolbar />
+    //     <div>
+    //       <UsersTable users={this.state.usuarios} />
+    //     </div>
+    //     </div>
+    //     )}
+    //   </div>
+    // );
   }
 }
 

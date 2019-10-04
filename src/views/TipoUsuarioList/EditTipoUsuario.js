@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import {
     Card,
     CardHeader,
@@ -14,6 +13,9 @@ import {
     FormControlLabel ,
   } from '@material-ui/core';
 
+  import MenuItem from '@material-ui/core/MenuItem';
+  import FormControl from '@material-ui/core/FormControl';
+  import Select from '@material-ui/core/Select';
 import axios from 'axios';
 
 class EditTipoUsuario extends Component {
@@ -21,10 +23,9 @@ class EditTipoUsuario extends Component {
     state = {
         id: '',
         nombre: '',
-        descripcion: '',
-        videoId: '',
-        duracion: '',
-        img: '',
+        tipoUsuario: '',
+        tipoUsuarioId: '',
+        tipoUsuarios: [],
         activo: true,
     }
 
@@ -32,10 +33,8 @@ class EditTipoUsuario extends Component {
         this.setState({
             id : this.props.tutorial._id,
             nombre: this.props.tutorial.nombre,
-            descripcion: this.props.tutorial.descripcion,
-            videoId: this.props.tutorial.videoId,
-            duracion: this.props.tutorial.duracion,
-            img: this.props.tutorial.link,
+            tipoUsuarioId: (this.props.tutorial.tipoUsuario ? this.props.tutorial.tipoUsuario._id : ''),
+            tipoUsuarios: this.props.tipoUsuarios || [],
             activo: this.props.tutorial.activo
         });
     }
@@ -45,28 +44,12 @@ class EditTipoUsuario extends Component {
         });
     };
 
-    onChangeImg = (e) => {
+    handleChangeTipoUsuario = event => {
+        this.setState({
+            tipoUsuarioId: event.target.value
+        });
+    };
 
-        const file = new FormData();
-        file.append('archivo', e.target.files[0]);
-
-        // this.setState({img:  URL.createObjectURL(e.target.files[0])});
-
-        if(e.target.files[0]){
-
-            axios.post('http://vm.integralit.cl:13151/api/upload/tutoriales', file)
-            .then(res => {
-                this.setState({
-                    img: "http://vm.integralit.cl:13151/uploads/tutoriales/" + res.data.nombre
-                });
-                console.log(res);
-
-            })
-            .catch(err => {
-                console.log(err);
-            });
-        }
-    }
 
     onChangeActivo = () => {
         this.setState({
@@ -74,18 +57,31 @@ class EditTipoUsuario extends Component {
         });
     }
 
+    // clean = (obj) => {
+    //     for (var propName in obj) { 
+    //         if (obj[propName] === '' || obj[propName] === null || obj[propName] === undefined) {
+    //             delete obj[propName];
+    //         }
+    //     }
+    // }
+
     onSubmit = () => {
+
+        let tuId = this.state.tipoUsuarioId ;
+        
+        if (tuId === ''){
+            tuId = null;
+        }
         let data = {
             nombre: this.state.nombre,
-            descripcion: this.state.descripcion,
-            videoId: this.state.videoId,
-            duracion: this.state.duracion,
-            link: this.state.img,
-            activo: this.state.activo
+            tipoUsuario: tuId,
+            activo: this.state.activo,
         };
 
-        if(this.state.nombre && this.state.descripcion && this.state.videoId && this.state.duracion && this.state.img){
-            axios.put('http://vm.integralit.cl:13151/api/tutoriales/'+this.state.id, data)
+        // this.clean(data);
+
+        if(this.state.nombre){
+            axios.put('http://vm.integralit.cl:13151/api/tipoUsuario/'+this.state.id, data)
                 .then(res => {
                     console.log(res);
                     this.props.cancelBtn();
@@ -104,8 +100,8 @@ class EditTipoUsuario extends Component {
                     noValidate
                 >
                 <CardHeader
-                    subheader="complete los campos para modificar el tutorial"
-                    title="Modificando tutorial"
+                    subheader="complete los campos para modificar el tipo usuario"
+                    title="Modificando tipo usuario"
                 />
                 <Divider />
                 <CardContent>
@@ -120,8 +116,8 @@ class EditTipoUsuario extends Component {
                         >
                             <TextField
                                 fullWidth
-                                helperText="Especifique un titulo para el tutorial"
-                                label="Titulo"
+                                helperText="Especifique un nombre para el tipo de usuario"
+                                label="Nombre"
                                 margin="dense"
                                 name="nombre"
                                 onChange={this.handleChange}
@@ -130,93 +126,30 @@ class EditTipoUsuario extends Component {
                                 variant="outlined"
                             />
                         </Grid>
+                        
                         <Grid
                             item
                             md={6}
                             xs={12}
                         >
-                            <TextField
-                                fullWidth
-                                helperText="Especifique una descripción para el tutorial"
-                                label="Descripción"
-                                margin="dense"
-                                multiline
-                                rowsMax="4"
-                                name="descripcion"
-                                onChange={this.handleChange}
-                                required
-                                value={this.state.descripcion}
-                                variant="outlined"
-                            />
+                            <Typography variant="subtitle1" style={{marginBottom: 10}}>Seleccione un tipo de usario padre</Typography>
+                            <FormControl >
+                                {/* <InputLabel htmlFor="age-simple">Seleccione un tipo de usario padre</InputLabel> */}
+                                <Select
+                                value={this.state.tipoUsuarioId}
+                                onChange={this.handleChangeTipoUsuario}
+                                inputProps={{
+                                    name: 'tipoUsuarios'
+                                }}
+                                >
+                                    <MenuItem value='' >Sin tipo usuario padre</MenuItem>
+                                    {this.state.tipoUsuarios.map( tip => {
+                                        return <MenuItem key={tip._id} value={tip._id}>{tip.nombre}</MenuItem>
+                                    })}
+                                </Select>
+                            </FormControl>
                         </Grid>
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                helperText="Especifique un Video URL para el tutorial"
-                                label="Video URL"
-                                margin="dense"
-                                name="videoId"
-                                onChange={this.handleChange}
-                                required
-                                value={this.state.videoId}
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                helperText="Especifique una duración del video"
-                                label="Duración del video"
-                                margin="dense"
-                                name="duracion"
-                                onChange={this.handleChange}
-                                required
-                                value={this.state.duracion}
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <Typography variant="subtitle1" style={{marginBottom: 10}}>Imagen del tutorial </Typography>
-                            <Grid
-                                item
-                                md={6}
-                                xs={12}
-                            >
-                                <input
-                                accept="image/*"
-                                style={{ display: 'none' }}
-                                id="raised-button-file"
-                                type="file"
-                                onChange={this.onChangeImg}
-                                />
-                                <label htmlFor="raised-button-file">
-                                <Button variant="contained" color="default" component="span" >
-                                    <CloudUploadIcon style={{marginRight: 10}}/>   
-                                    Upload
-                                </Button>
-                                </label> 
 
-                            </Grid>
-                            <Grid
-                                item
-                                md={6}
-                                xs={12}
-                            >
-                                <img style={{marginTop:10, maxWidth: 300, maxHeight: 200}} src={this.state.img} alt={this.state.nombre}/>
-                            </Grid>
-                        </Grid>
                         <Grid
                             item
                             md={6}
@@ -239,7 +172,7 @@ class EditTipoUsuario extends Component {
                         variant="contained"
                         onClick={this.onSubmit}
                     >
-                        Guardar tutorial
+                        Guardar tipo usuario
                     </Button>
                     <Button
                         color="primary"

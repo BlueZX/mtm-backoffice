@@ -8,6 +8,7 @@ class TipoUsuarioList extends Component {
 
   
   state = {
+    init: [],
     tutoriales: [],
     adding: false,
     activos: true,
@@ -39,7 +40,10 @@ class TipoUsuarioList extends Component {
       axios.get('http://vm.integralit.cl:13151/api/tipoUsuario')
       .then(res => {
         console.log(res.data);
-        this.setState({tutoriales: res.data.tipoUsuarios });
+        this.setState({
+          init: res.data.tipoUsuarios ,
+          tutoriales: res.data.tipoUsuarios 
+        });
       })
       .catch(err => {
         console.log(err);
@@ -49,7 +53,10 @@ class TipoUsuarioList extends Component {
       axios.get('http://vm.integralit.cl:13151/api/all/tipoUsuario')
       .then(res => {
         console.log(res.data);
-        this.setState({tutoriales: res.data.tipoUsuarios });
+        this.setState({
+          init: res.data.tipoUsuarios ,
+          tutoriales: res.data.tipoUsuarios 
+        });
       })
       .catch(err => {
         console.log(err);
@@ -64,7 +71,10 @@ class TipoUsuarioList extends Component {
       axios.get('http://vm.integralit.cl:13151/api/tipoUsuario')
       .then(res => {
         console.log(res.data);
-        this.setState({tutoriales: res.data.tipoUsuarios });
+        this.setState({
+          init: res.data.tipoUsuarios ,
+          tutoriales: res.data.tipoUsuarios 
+        });
       })
       .catch(err => {
         console.log(err);
@@ -74,12 +84,26 @@ class TipoUsuarioList extends Component {
       axios.get('http://vm.integralit.cl:13151/api/all/tipoUsuario')
       .then(res => {
         console.log(res.data);
-        this.setState({tutoriales: res.data.tipoUsuarios });
+        this.setState({
+          init: res.data.tipoUsuarios ,
+          tutoriales: res.data.tipoUsuarios 
+        });
       })
       .catch(err => {
         console.log(err);
       });
     }
+  }
+
+  onSearch = (event) => {
+    console.log('buscvnado '+ event.target.value);
+
+      let updatedList = this.state.init;
+
+      updatedList = updatedList.filter((item) => {
+        return item.nombre.toLowerCase().search(event.target.value.toLowerCase()) !== -1;
+      });
+      this.setState({tutoriales: updatedList});
   }
 
   render() {
@@ -88,12 +112,12 @@ class TipoUsuarioList extends Component {
       <div>
         {this.state.tutoriales.length === 0 ? (
           <div>
-            <UsersToolbar />
-            Cargando ...
+            <UsersToolbar  onSearch={this.onSearch}/>
+            Sin resultados
           </div>
         ) : (this.state.adding ? <AddTipoUsuario adding={this.changeAdding} /> : (
           <div>
-            <UsersToolbar adding={this.changeAdding} activos={this.changeActivos} />
+            <UsersToolbar adding={this.changeAdding} activos={this.changeActivos}  onSearch={this.onSearch}/>
             <div>
               <TipoUsuarioTable tutoriales={this.state.tutoriales} getCapturas={this.getCapturas} activos={this.state.activos} />
             </div>

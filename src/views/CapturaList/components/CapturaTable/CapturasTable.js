@@ -76,11 +76,11 @@ const CapturasTable = props => {
 
   const classes = useStyles();
 
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
+  const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const [cap, setCap] = React.useState({});
-  const [modalStyle] = React.useState(getModalStyle);
 
   const handlePageChange = (event, page) => {
     setPage(page);
@@ -125,7 +125,7 @@ const CapturasTable = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {capturas.slice(0, rowsPerPage).map(captura => (
+                {capturas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(captura => (
                   <TableRow
                     className={classes.tableRow}
                     hover
@@ -159,12 +159,14 @@ const CapturasTable = props => {
                       {/* {captura.activo ? <p>Activo</p> : <p>Inactivo</p>} */}
                       {captura.estado.nombre}
                     </TableCell>
-                    <IconButton aria-label="edit" >
-                      <DoneIcon onClick={ (e) => { handleChange(e, captura) }}/>
-                    </IconButton>
-                    <IconButton aria-label="delete" >
-                      <DeleteIcon />
-                    </IconButton>
+                    <TableCell>
+                      <IconButton aria-label="edit" onClick={ (e) => { handleChange(e, captura) }} >
+                        <DoneIcon />
+                      </IconButton>
+                      <IconButton aria-label="delete" >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

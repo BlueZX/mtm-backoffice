@@ -225,7 +225,7 @@ class EditTutorial extends Component {
                             <Typography variant="subtitle1" style={{marginBottom: 10}}>Visibilidad en la APP </Typography>
                             <FormControlLabel
                                 control={
-                                <Switch checked={this.state.activo} onChange={this.onChangeActivo} value="activo" />
+                                <Switch checked={this.state.activo} onChange={this.onChangeActivo} value="true" />
                                 }
                                 label="Activo"
                             />

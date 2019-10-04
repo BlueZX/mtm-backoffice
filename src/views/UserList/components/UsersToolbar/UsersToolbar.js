@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 import { SearchInput } from '../../../../components'
 
@@ -29,9 +31,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersToolbar = props => {
-  const { className, ...rest } = props;
+  const { className, adding,onSearch, activos, ...rest } = props;
 
   const classes = useStyles();
+
+  const [state, setState] = React.useState({
+    checkedB: true,
+  });
+
+  const handleChange = name => event => {
+    setState({ ...state, [name]: event.target.checked });
+    activos(event.target.checked);
+  };
 
   return (
     <div
@@ -40,19 +51,32 @@ const UsersToolbar = props => {
     >
       <div className={classes.row}>
         <span className={classes.spacer} />
-        <Button className={classes.importButton}>Import</Button>
-        <Button className={classes.exportButton}>Export</Button>
+        {/* <Button className={classes.importButton}>Import</Button>
+        <Button className={classes.exportButton}>Export</Button> */}
         <Button
           color="primary"
           variant="contained"
+          onClick={adding}
         >
-          Add user
+          Añadir un usuario
         </Button>
       </div>
       <div className={classes.row}>
         <SearchInput
           className={classes.searchInput}
-          placeholder="Search user"
+          placeholder="Buscar nombre"
+          onChange={onSearch}
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={state.checkedB}
+              onChange={handleChange('checkedB')}
+              value="checkedB"
+              color="primary"
+            />
+          }
+          label="Activos"
         />
       </div>
     </div>

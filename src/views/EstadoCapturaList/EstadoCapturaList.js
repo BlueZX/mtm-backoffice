@@ -8,6 +8,7 @@ class EstadoCapturaList extends Component {
 
   
   state = {
+    init: [],
     tutoriales: [],
     adding: false,
     activos: true,
@@ -39,7 +40,10 @@ class EstadoCapturaList extends Component {
       axios.get('http://vm.integralit.cl:13151/api/EstadoCaptura')
       .then(res => {
         console.log(res.data);
-        this.setState({tutoriales: res.data.estadoCaptura });
+        this.setState({
+          init: res.data.estadoCaptura,
+          tutoriales: res.data.estadoCaptura
+        });
       })
       .catch(err => {
         console.log(err);
@@ -49,7 +53,10 @@ class EstadoCapturaList extends Component {
       axios.get('http://vm.integralit.cl:13151/api/all/EstadoCaptura')
       .then(res => {
         console.log(res.data);
-        this.setState({tutoriales: res.data.estadoCaptura });
+        this.setState({
+          init: res.data.estadoCaptura,
+          tutoriales: res.data.estadoCaptura
+        });
       })
       .catch(err => {
         console.log(err);
@@ -64,7 +71,10 @@ class EstadoCapturaList extends Component {
       axios.get('http://vm.integralit.cl:13151/api/EstadoCaptura')
       .then(res => {
         console.log(res.data);
-        this.setState({tutoriales: res.data.estadoCaptura });
+        this.setState({
+          init: res.data.estadoCaptura,
+          tutoriales: res.data.estadoCaptura
+        });
       })
       .catch(err => {
         console.log(err);
@@ -74,12 +84,26 @@ class EstadoCapturaList extends Component {
       axios.get('http://vm.integralit.cl:13151/api/all/EstadoCaptura')
       .then(res => {
         console.log(res.data);
-        this.setState({tutoriales: res.data.estadoCaptura });
+        this.setState({
+          init: res.data.estadoCaptura,
+          tutoriales: res.data.estadoCaptura
+        });
       })
       .catch(err => {
         console.log(err);
       });
     }
+  }
+
+  onSearch = (event) => {
+    console.log('buscvnado '+ event.target.value);
+
+      let updatedList = this.state.init;
+
+      updatedList = updatedList.filter((item) => {
+        return item.nombre.toLowerCase().search(event.target.value.toLowerCase()) !== -1;
+      });
+      this.setState({tutoriales: updatedList});
   }
 
   render() {
@@ -88,12 +112,12 @@ class EstadoCapturaList extends Component {
       <div>
         {this.state.tutoriales.length === 0 ? (
           <div>
-            <UsersToolbar />
-            Cargando ...
+            <UsersToolbar adding={this.changeAdding} activos={this.changeActivos} onSearch={this.onSearch}/>
+            Sin resultados
           </div>
         ) : (this.state.adding ? <AddEstadoCaptura adding={this.changeAdding} /> : (
           <div>
-            <UsersToolbar adding={this.changeAdding} activos={this.changeActivos} />
+            <UsersToolbar adding={this.changeAdding} activos={this.changeActivos} onSearch={this.onSearch} />
             <div>
               <EstadoCapturaTable tutoriales={this.state.tutoriales} getCapturas={this.getCapturas} activos={this.state.activos} />
             </div>

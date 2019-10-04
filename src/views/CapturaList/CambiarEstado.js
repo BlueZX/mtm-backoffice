@@ -7,15 +7,11 @@ import {
     Divider,
     Grid,
     Button,
-    TextField,
     Typography,
-    Switch,
-    FormControlLabel ,
   } from '@material-ui/core';
   import ModalImage from "react-modal-image";
   import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
@@ -67,19 +63,15 @@ class CambiarEstado extends Component {
         });
     };
 
-    onChangeActivo = () => {
-        this.setState({
-            activo: !this.state.activo
-        });
-    }
-
     onSubmit = () => {
         let data = {
             estado: this.state.estadoCapturaId,
         };
 
+        console.log(this.state.id + " id ");
+
         if(this.state.estadoCapturaId){
-            axios.put('http://vm.integralit.cl:13151/api/Captura/'+this.state.id, data)
+                axios.put('http://vm.integralit.cl:13151/api/Captura/'+this.state.id, data)
                 .then(res => {
                     console.log(res);
                     this.props.cancelBtn();
@@ -116,6 +108,7 @@ class CambiarEstado extends Component {
                                 small={`data:${this.state.img.type};base64,${this.state.img.data}`}
                                 large={`data:${this.state.img.type};base64,${this.state.img.data}`}
                                 alt={this.state.id}
+                                style={{marginTop:10, maxWidth: 300, maxHeight: 200}}
                             />
                         </Grid>
                         <Grid
@@ -130,8 +123,7 @@ class CambiarEstado extends Component {
                                 value={this.state.estadoCapturaId}
                                 onChange={this.handleChangeState}
                                 inputProps={{
-                                    name: 'estados',
-                                    id: 'age-simple',
+                                    name: 'estados'
                                 }}
                                 >
                                     {this.state.estados.map( est => {

@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersToolbar = props => {
-  const { className,adding, activos, ...rest } = props;
+  const { className,adding,onSearch, activos, ...rest } = props;
 
   const [state, setState] = React.useState({
     checkedB: true,
@@ -50,8 +50,8 @@ const UsersToolbar = props => {
     >
       <div className={classes.row}>
         <span className={classes.spacer} />
-        <Button className={classes.importButton}>Import</Button>
-        <Button className={classes.exportButton}>Export</Button>
+        {/* <Button className={classes.importButton}>Import</Button>
+        <Button className={classes.exportButton}>Export</Button> */}
         <Button
           color="primary"
           variant="contained"
@@ -63,8 +63,8 @@ const UsersToolbar = props => {
       <div className={classes.row}>
         <SearchInput
           className={classes.searchInput}
-          placeholder="Buscar Estado de captura"
-          onChange={() => {console.log("click")}}
+          placeholder="Buscar nombre"
+          onChange={onSearch}
         />
         <FormControlLabel
           control={

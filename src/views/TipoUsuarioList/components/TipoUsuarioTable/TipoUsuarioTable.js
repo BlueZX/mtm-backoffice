@@ -121,7 +121,7 @@ const TipoUsuarioTable = props => {
   };
 
   const handleClickDelete = () => {
-    axios.delete('http://vm.integralit.cl:13151/api/tutoriales/'+idEdit)
+    axios.delete('http://vm.integralit.cl:13151/api/tipoUsuario/'+idEdit)
       .then(res => {
         console.log(res);
         handleCloseDialog();
@@ -217,7 +217,7 @@ const TipoUsuarioTable = props => {
         onClose={handleClose}
       >
         <div style={modalStyle} className={classes.paper}>
-          <EditTipoUsuario cancelBtn={handleClose} tutorial={tuto} />
+          <EditTipoUsuario cancelBtn={handleClose} tutorial={tuto} tipoUsuarios={tutoriales} />
         </div>
       </Modal>
 
@@ -231,7 +231,7 @@ const TipoUsuarioTable = props => {
         <DialogTitle id="alert-dialog-title">{"¿Esta seguro de eliminar este tutorial?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Al eliminar el tutorial, este quedara inactivo y no sera visible
+            Al eliminar el tipo usuario, este quedara inactivo y no sera visible
             en la aplicación movil.
           </DialogContentText>
         </DialogContent>
