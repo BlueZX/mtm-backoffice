@@ -176,12 +176,14 @@ const SignIn = props => {
     axios.post('http://vm.integralit.cl:13151/api/backoffice/login', data)
       .then(res => {
         localStorage.setItem("login", true);
+        localStorage.setItem("id", res.data.usuario._id);
         window.location.reload();
         history.push('/');
         console.log(res);
       })
       .catch(err => {
         localStorage.removeItem("login");
+        localStorage.removeItem("id");
         console.log(err);
       });
 

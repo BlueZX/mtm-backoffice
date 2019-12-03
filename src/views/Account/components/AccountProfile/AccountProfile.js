@@ -35,14 +35,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AccountProfile = props => {
-  const { className, ...rest } = props;
+  const { className, nick, email, ...rest} = props;
 
   const classes = useStyles();
 
   const user = {
-    name: 'Shen Zhi',
+    name: nick,
     city: 'Los Angeles',
-    country: 'USA',
+    email: email,
     timezone: 'GTM-7',
     avatar: '/images/avatars/avatar_11.png'
   };
@@ -59,14 +59,14 @@ const AccountProfile = props => {
               gutterBottom
               variant="h2"
             >
-              John Doe
+              {user.name}
             </Typography>
             <Typography
               className={classes.locationText}
               color="textSecondary"
               variant="body1"
             >
-              {user.city}, {user.country}
+              {user.email}
             </Typography>
             <Typography
               className={classes.dateText}

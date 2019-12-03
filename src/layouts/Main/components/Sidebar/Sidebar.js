@@ -59,12 +59,22 @@ const Sidebar = props => {
       icon: <TextFieldsIcon />
     },
     {
-      title: 'EstadoCaptura',
+      title: 'Grupo especies',
+      href: '/grupoEspecies',
+      icon: <TextFieldsIcon />
+    },
+    {
+      title: 'Especies',
+      href: '/especies',
+      icon: <TextFieldsIcon />
+    },
+    {
+      title: 'Estado de la captura',
       href: '/estadoCaptura',
       icon: <TextFieldsIcon />
     },
     {
-      title: 'TipoUsuario',
+      title: 'Tipo de usuario',
       href: '/tipoUsuario',
       icon: <TextFieldsIcon />
     },

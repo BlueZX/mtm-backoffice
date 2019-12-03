@@ -116,10 +116,13 @@ const CapturasTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Coordenadas</TableCell>
+                  <TableCell>Nombre</TableCell>
+                  <TableCell>Edad</TableCell>
+                  <TableCell>Coordenada</TableCell>
                   <TableCell>Fecha</TableCell>
                   <TableCell>Muestra</TableCell>
                   <TableCell>Esp. Sospechosa</TableCell>
+                  <TableCell>Esp. Detectada</TableCell>
                   <TableCell>Estado</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
@@ -131,6 +134,17 @@ const CapturasTable = props => {
                     hover
                     key={captura._id}
                   >
+                    <TableCell>
+                    <div className={classes.nameContainer}>
+                      <Typography variant="body1">{captura.owner.nombre ? captura.owner.nombre + ' ' + captura.owner.apellidos : captura.owner.nick }</Typography>
+                    </div>
+                    </TableCell>
+
+                    <TableCell>
+                    <div className={classes.nameContainer}>
+                      <Typography variant="body1">{captura.owner.edad ? captura.owner.edad : ' - '}</Typography>
+                    </div>
+                    </TableCell>
 
                     <TableCell>
                       <div className={classes.nameContainer}>
@@ -138,7 +152,7 @@ const CapturasTable = props => {
                       </div>
                     </TableCell>
                     <TableCell>
-                    <Typography variant="body1">{captura.selectedDate}</Typography>
+                    <Typography variant="body1">{new Date(captura.selectedDate).toLocaleDateString() }</Typography>
                     </TableCell>
 
                     <TableCell>
@@ -152,9 +166,16 @@ const CapturasTable = props => {
                     </TableCell>
                     <TableCell>
                       {captura.especiesSelected.map( esp => {
-                        return <Typography key={esp.especieId} variant="body1">{esp.especieId}</Typography>
+                        return <Typography key={esp.especieId} variant="body1">{(esp.nombre || esp.especieId) + ", "}</Typography>
                       })}
                     </TableCell>
+
+                    <TableCell> 
+                    {captura.especiesDetectadas.length > 0 ? captura.especiesDetectadas.map( esp => {
+                        return <Typography key={esp.id} variant="body1">{(esp.nombre || esp.id) + ", "}</Typography>
+                      }) : <Typography> - </Typography>}
+                    </TableCell>
+
                     <TableCell>
                       {/* {captura.activo ? <p>Activo</p> : <p>Inactivo</p>} */}
                       {captura.estado.nombre}
