@@ -39,9 +39,6 @@ const UsersToolbar = props => {
       className={clsx(classes.root, className)}
     >
       <div className={classes.row}>
-        <span className={classes.spacer} />
-      </div>
-      <div className={classes.row}>
         <SearchInput
           className={classes.searchInput}
           placeholder="Buscar por nombre"

@@ -4,33 +4,6 @@ import { UsersToolbar, UsersTable } from './components';
 import axios from 'axios';
 import AddUser from './AddUser';
 
-/*
-const UserList = () => {
-  const classes = useStyles();
-  //const [users] = useState(mockData);
-  //const [users] = useState(getUser());
-  const users = getUser();
-  console.log(users);
-
-  // axios.get('http://vm.integralit.cl:13151/api/usuario/')
-  // .then(res => {
-  //   console.log(res);
-  //   [users].push(res.data.usuarios);
-  // });
-
-  
-
-  return (
-    <div className={classes.root}>
-      <UsersToolbar />
-      <div className={classes.content}>
-        <UsersTable users={users} />
-      </div>
-    </div>
-  );
-};
-*/
-
 class UserList extends Component {
 
   

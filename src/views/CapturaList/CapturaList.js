@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { UsersToolbar, CapturaTable } from './components';
 import axios from 'axios';
+import { Typography } from '@material-ui/core';
 
 class CapturaList extends Component {
 
@@ -70,6 +71,10 @@ class CapturaList extends Component {
 
     return (
       <div>
+        <div style={{margin:17, marginTop:10, marginBottom:10}}>
+          <Typography variant="h5">Lista de capturas</Typography>
+          <Typography variant="body1">En esta pantalla encontrarás información de las capturas hechas por los usuarios.</Typography>
+        </div>
         {this.state.capturas.length === 0 ? (
           <div>
             <UsersToolbar onSearch={this.onSearch} onSearch2={this.onSearch2} onSearch3={this.onSearch3} />
