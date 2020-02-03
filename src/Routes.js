@@ -10,6 +10,7 @@ import {
   UserList as UserListView,
   CapturaList as CapturaListView,
   TutorialList as TutorialListView,
+  PracticaList as PracticaListView,
   EstadoCapturaList as EstadoCapturaListView,
   EspeciesList as EspeciesListView,
   GrupoEspeciesList as GrupoEspeciesListView,
@@ -61,6 +62,12 @@ const Routes = () => {
           exact
           layout={MainLayout}
           path="/tutoriales"
+        />
+        <RouteWithLayout
+          component={PracticaListView}
+          exact
+          layout={MainLayout}
+          path="/practica"
         />
         <RouteWithLayout
           component={EstadoCapturaListView}

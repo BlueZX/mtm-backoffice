@@ -23,11 +23,13 @@ class AddEspecies extends Component {
     state = {
         nombre: '',
         descripcion: '',
+        description: '',
         genero: '',
         grupoEspecieId: '',
         grupoEspecies: [],
         img: '',
         tipo: '',
+        type: '',
         images:[]
     }
 
@@ -79,12 +81,14 @@ class AddEspecies extends Component {
             grupoEspecie: this.state.grupoEspecieId,
             genero: this.state.genero,
             descripcion: this.state.descripcion,
+            description: this.state.description,
             tipo: this.state.tipo,
+            type: this.state.type,
             tinyImage: this.state.img,
             images: this.state.images
         };
 
-        if(this.state.nombre && this.state.genero && this.state.tipo && this.state.img){
+        if(this.state.nombre && this.state.genero && this.state.tipo && this.state.type && this.state.descripcion && this.state.description && this.state.img){
             axios.post('http://vm.integralit.cl:13151/api/especies', data)
                 .then(res => {
                     console.log(res);
@@ -126,7 +130,7 @@ class AddEspecies extends Component {
                         >
                             <TextField
                                 fullWidth
-                                helperText="Especifique un titulo para la especie"
+                                helperText="Especifique un nombre para la especie"
                                 label="Nombre"
                                 margin="dense"
                                 name="nombre"
@@ -181,6 +185,25 @@ class AddEspecies extends Component {
                         >
                             <TextField
                                 fullWidth
+                                helperText="Especifique una descripción en ingles para la especie"
+                                label="Description"
+                                margin="dense"
+                                multiline
+                                rowsMax="4"
+                                name="description"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.description}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
                                 helperText="Especifique un tipo para la especie"
                                 label="Tipo"
                                 margin="dense"
@@ -188,6 +211,23 @@ class AddEspecies extends Component {
                                 onChange={this.handleChange}
                                 required
                                 value={this.state.tipo}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
+                                helperText="Especifique un tipo en ingles para la especie"
+                                label="Type"
+                                margin="dense"
+                                name="type"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.type}
                                 variant="outlined"
                             />
                         </Grid>

@@ -15,7 +15,8 @@ import axios from 'axios';
 class addEstadoCaptura extends Component {
 
     state = {
-        nombre: ''
+        nombre: '',
+        name:'',
     }
     handleChange = event => {
         this.setState({
@@ -25,10 +26,11 @@ class addEstadoCaptura extends Component {
 
     onSubmit = () => {
         let data = {
-            nombre: this.state.nombre
+            nombre: this.state.nombre,
+            name: this.state.name
         };
 
-        if(this.state.nombre){
+        if(this.state.nombre && this.state.name){
             axios.post('http://vm.integralit.cl:13151/api/EstadoCaptura', data)
                 .then(res => {
                     console.log(res);
@@ -71,6 +73,23 @@ class addEstadoCaptura extends Component {
                                 onChange={this.handleChange}
                                 required
                                 value={this.state.nombre}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
+                                helperText="Especifique un nombre en ingles para el EstadoCaptura"
+                                label="Name"
+                                margin="dense"
+                                name="name"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.name}
                                 variant="outlined"
                             />
                         </Grid>

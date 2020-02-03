@@ -34,7 +34,34 @@ class CapturaList extends Component {
       let updatedList = this.state.init;
 
       updatedList = updatedList.filter((item) => {
-        return item.selectedDate.toLowerCase().search(event.target.value.toLowerCase()) !== -1;
+        return (new Date(item.selectedDate).toLocaleDateString()).toLowerCase().search(event.target.value.toLowerCase()) !== -1;
+      });
+      this.setState({capturas: updatedList});
+  }
+
+  onSearch2 = (event) => {
+    console.log('buscvnado '+ event.target.value);
+
+      let updatedList = this.state.init;
+
+      updatedList = updatedList.filter((item) => {
+        return item.estado.nombre.toLowerCase().search(event.target.value.toLowerCase()) !== -1;
+      });
+      this.setState({capturas: updatedList});
+  }
+
+  onSearch3 = (event) => {
+    console.log('buscvnado '+ event.target.value);
+
+      let updatedList = this.state.init;
+
+      updatedList = updatedList.filter((item) => {
+        if(item.owner.nombre){
+          return (item.owner.nombre + " "+ item.owner.apellidos).toLowerCase().search(event.target.value.toLowerCase()) !== -1;
+        }
+        else{
+          return (item.owner.nick).toLowerCase().search(event.target.value.toLowerCase()) !== -1;
+        }
       });
       this.setState({capturas: updatedList});
   }
@@ -45,12 +72,12 @@ class CapturaList extends Component {
       <div>
         {this.state.capturas.length === 0 ? (
           <div>
-            <UsersToolbar onSearch={this.onSearch}/>
+            <UsersToolbar onSearch={this.onSearch} onSearch2={this.onSearch2} onSearch3={this.onSearch3} />
             Sin resultados
           </div>
         ) : (
           <div>
-        <UsersToolbar onSearch={this.onSearch} />
+        <UsersToolbar onSearch={this.onSearch} onSearch2={this.onSearch2} onSearch3={this.onSearch3} />
         <div>
           <CapturaTable capturas={this.state.capturas} getCapturas={this.getCapturas} />
         </div>

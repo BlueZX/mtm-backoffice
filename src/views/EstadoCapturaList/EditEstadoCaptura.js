@@ -20,6 +20,7 @@ class EditEstadoCaptura extends Component {
     state = {
         id: '',
         nombre: '',
+        name: '',
         activo: true,
     }
 
@@ -27,6 +28,7 @@ class EditEstadoCaptura extends Component {
         this.setState({
             id : this.props.tutorial._id,
             nombre: this.props.tutorial.nombre,
+            name: this.props.tutorial.name,
             activo: this.props.tutorial.activo
         });
     }
@@ -45,10 +47,11 @@ class EditEstadoCaptura extends Component {
     onSubmit = () => {
         let data = {
             nombre: this.state.nombre,
+            name: this.state.name,
             activo: this.state.activo
         };
 
-        if(this.state.nombre){
+        if(this.state.nombre && this.state.name){
             axios.put('http://vm.integralit.cl:13151/api/EstadoCaptura/'+this.state.id, data)
                 .then(res => {
                     console.log(res);
@@ -91,6 +94,23 @@ class EditEstadoCaptura extends Component {
                                 onChange={this.handleChange}
                                 required
                                 value={this.state.nombre}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
+                                helperText="Especifique un nombre en ingles para el estado de la captura"
+                                label="Capture state"
+                                margin="dense"
+                                name="name"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.name}
                                 variant="outlined"
                             />
                         </Grid>

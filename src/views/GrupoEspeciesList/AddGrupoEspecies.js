@@ -19,6 +19,8 @@ class AddGrupoEspecies extends Component {
     state = {
         nombre: '',
         descripcion: '',
+        name:'',
+        description:'',
         img: ''
     }
     handleChange = event => {
@@ -54,10 +56,12 @@ class AddGrupoEspecies extends Component {
         let data = {
             nombre: this.state.nombre,
             descripcion: this.state.descripcion,
-            images: this.state.img
+            images: this.state.img,
+            name: this.state.name,
+            description: this.state.description,
         };
 
-        if(this.state.nombre && this.state.descripcion && this.state.img){
+        if(this.state.nombre && this.state.name && this.state.description && this.state.descripcion && this.state.img){
             axios.post('http://vm.integralit.cl:13151/api/grupoEspecies', data)
                 .then(res => {
                     console.log(res);
@@ -110,6 +114,23 @@ class AddGrupoEspecies extends Component {
                         >
                             <TextField
                                 fullWidth
+                                helperText="Especifique un nombre en ingles para el grupoEspecie"
+                                label="Name"
+                                margin="dense"
+                                name="name"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.name}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
                                 helperText="Especifique una descripción para el grupoEspecie"
                                 label="Descripción"
                                 margin="dense"
@@ -119,6 +140,25 @@ class AddGrupoEspecies extends Component {
                                 onChange={this.handleChange}
                                 required
                                 value={this.state.descripcion}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
+                                helperText="Especifique una descripción en ingles para el grupoEspecie"
+                                label="Descripcion"
+                                margin="dense"
+                                multiline
+                                rowsMax="4"
+                                name="description"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.description}
                                 variant="outlined"
                             />
                         </Grid>

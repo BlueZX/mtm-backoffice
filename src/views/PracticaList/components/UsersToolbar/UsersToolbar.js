@@ -31,9 +31,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersToolbar = props => {
-  const { className, adding,onSearch, onSearch3, activos, ...rest } = props;
-
-  const classes = useStyles();
+  const { className,adding,onSearch, activos, ...rest } = props;
 
   const [state, setState] = React.useState({
     checkedB: true,
@@ -44,6 +42,7 @@ const UsersToolbar = props => {
     activos(event.target.checked);
   };
 
+  const classes = useStyles();
   return (
     <div
       {...rest}
@@ -58,20 +57,15 @@ const UsersToolbar = props => {
           variant="contained"
           onClick={adding}
         >
-          Añadir un usuario
+          Añadir Practica
         </Button>
       </div>
-      <div className={classes.row}>
-        <SearchInput
+      <div style={{marginLeft:20}} className={classes.row}>
+        {/* <SearchInput
           className={classes.searchInput}
-          placeholder="Buscar nombre de usuario"
+          placeholder="Buscar practica"
           onChange={onSearch}
-        />
-        <SearchInput
-          className={classes.searchInput}
-          placeholder="Correo electronico"
-          onChange={onSearch3}
-        />
+        /> */}
         <FormControlLabel
           control={
             <Switch

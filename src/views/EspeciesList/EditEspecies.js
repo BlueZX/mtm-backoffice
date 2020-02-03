@@ -26,6 +26,7 @@ class EditTutorial extends Component {
         id: '',
         nombre: '',
         descripcion: '',
+        description: '',
         genero: '',
         ge: {},
         grupoEspecies: [],
@@ -33,10 +34,8 @@ class EditTutorial extends Component {
         tinyImage: '',
         images: [],
         tipo: '',
+        type: '',
         activo: true,
-
-
-        
     }
 
     componentDidMount = () => {
@@ -44,14 +43,18 @@ class EditTutorial extends Component {
             id : this.props.especie._id,
             nombre: this.props.especie.nombre,
             descripcion: this.props.especie.descripcion,
+            description: this.props.especie.description,
             genero: this.props.especie.genero,
             ge: this.props.especie.grupoEspecie,
             grupoEspecieId: this.props.especie.grupoEspecie._id,
             tinyImage: this.props.especie.tinyImage,
             images: this.props.especie.images,
             tipo: this.props.especie.tipo,
+            type: this.props.especie.type,
             activo: this.props.especie.activo
         });
+
+        console.log(this.props.especie._id);
 
         axios.get('http://vm.integralit.cl:13151/api/grupoEspecies')
         .then(res => {
@@ -109,20 +112,25 @@ class EditTutorial extends Component {
     onSubmit = () => {
         let data = {
 
-            id : this.state._id,
+            id : this.props.especie._id,
             nombre: this.state.nombre,
             descripcion: this.state.descripcion,
+            description: this.state.description || '',
             genero: this.state.genero,
             grupoEspecie: this.state.grupoEspecieId,
             tinyImage: this.state.tinyImage,
             images: this.state.images,
             tipo: this.state.tipo,
+            type: this.state.type,
             activo: this.state.activo
 
         };
 
-        if(this.state.nombre && this.state.descripcion && this.state.genero && this.state.grupoEspecie && this.state.tipo && this.state.tinyImage ){
-            axios.put('http://vm.integralit.cl:13151/api/especies/'+this.state.id, data)
+        console.log("entre");
+        console.log(data);
+
+        if(this.state.nombre){
+            axios.put('http://vm.integralit.cl:13151/api/especies/'+this.props.especie._id, data)
                 .then(res => {
                     console.log(res);
                     this.props.cancelBtn();
@@ -210,6 +218,25 @@ class EditTutorial extends Component {
                         >
                             <TextField
                                 fullWidth
+                                helperText="Especifique una descripción en ingles para la especie"
+                                label="Description"
+                                margin="dense"
+                                multiline
+                                rowsMax="4"
+                                name="description"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.description}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
                                 helperText="Especifique un tipo para la especie"
                                 label="Tipo *"
                                 margin="dense"
@@ -217,6 +244,23 @@ class EditTutorial extends Component {
                                 onChange={this.handleChange}
                                 required
                                 value={this.state.tipo}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
+                                helperText="Especifique un tipo en ingles para la especie"
+                                label="Type *"
+                                margin="dense"
+                                name="type"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.type}
                                 variant="outlined"
                             />
                         </Grid>

@@ -14,3 +14,4 @@ export { default as EstadoCapturaList } from './EstadoCapturaList';
 export { default as TipoUsuarioList } from './TipoUsuarioList';
 export { default as GrupoEspeciesList } from './GrupoEspeciesList';
 export { default as EspeciesList } from './EspeciesList';
+export { default as PracticaList } from './PracticaList';

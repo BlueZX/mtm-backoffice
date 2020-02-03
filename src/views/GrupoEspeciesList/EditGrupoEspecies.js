@@ -21,7 +21,9 @@ class EditGrupoEspecies extends Component {
     state = {
         id: '',
         nombre: '',
+        name:'',
         descripcion: '',
+        description: '',
         images: '',
         img: '',
         activo: true,
@@ -31,7 +33,9 @@ class EditGrupoEspecies extends Component {
         this.setState({
             id : this.props.grupoEspecie._id,
             nombre: this.props.grupoEspecie.nombre,
+            name: this.props.grupoEspecie.name,
             descripcion: this.props.grupoEspecie.descripcion,
+            description: this.props.grupoEspecie.description,
             img: this.props.grupoEspecie.images,
             activo: this.props.grupoEspecie.activo
         });
@@ -74,12 +78,14 @@ class EditGrupoEspecies extends Component {
     onSubmit = () => {
         let data = {
             nombre: this.state.nombre,
+            name: this.state.name,
             descripcion: this.state.descripcion,
+            description: this.state.description,
             images: this.state.img,
             activo: this.state.activo
         };
 
-        if(this.state.nombre && this.state.descripcion && this.state.img){
+        if(this.state.nombre && this.state.name && this.state.description && this.state.descripcion && this.state.img){
             axios.put('http://vm.integralit.cl:13151/api/grupoEspecies/'+this.state.id, data)
                 .then(res => {
                     console.log(res);
@@ -132,6 +138,23 @@ class EditGrupoEspecies extends Component {
                         >
                             <TextField
                                 fullWidth
+                                helperText="Especifique un nombre en ingles para el grupo especie"
+                                label="Name"
+                                margin="dense"
+                                name="name"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.name}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
                                 helperText="Especifique una descripción para el grupo especie"
                                 label="Descripción"
                                 margin="dense"
@@ -141,6 +164,25 @@ class EditGrupoEspecies extends Component {
                                 onChange={this.handleChange}
                                 required
                                 value={this.state.descripcion}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
+                                helperText="Especifique una descripción en ingles para el grupo especie"
+                                label="Description"
+                                margin="dense"
+                                multiline
+                                rowsMax="4"
+                                name="description"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.description}
                                 variant="outlined"
                             />
                         </Grid>

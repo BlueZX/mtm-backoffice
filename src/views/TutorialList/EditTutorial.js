@@ -21,7 +21,9 @@ class EditTutorial extends Component {
     state = {
         id: '',
         nombre: '',
+        name: '',
         descripcion: '',
+        description: '',
         videoId: '',
         duracion: '',
         img: '',
@@ -32,7 +34,9 @@ class EditTutorial extends Component {
         this.setState({
             id : this.props.tutorial._id,
             nombre: this.props.tutorial.nombre,
+            name: this.props.tutorial.name,
             descripcion: this.props.tutorial.descripcion,
+            description: this.props.tutorial.description,
             videoId: this.props.tutorial.videoId,
             duracion: this.props.tutorial.duracion,
             img: this.props.tutorial.link,
@@ -77,14 +81,16 @@ class EditTutorial extends Component {
     onSubmit = () => {
         let data = {
             nombre: this.state.nombre,
+            name: this.state.name,
             descripcion: this.state.descripcion,
+            description: this.state.description,
             videoId: this.state.videoId,
             duracion: this.state.duracion,
             link: this.state.img,
             activo: this.state.activo
         };
 
-        if(this.state.nombre && this.state.descripcion && this.state.videoId && this.state.duracion && this.state.img){
+        if(this.state.nombre && this.state.name && this.state.descripcion && this.state.description && this.state.videoId && this.state.duracion && this.state.img){
             axios.put('http://vm.integralit.cl:13151/api/tutoriales/'+this.state.id, data)
                 .then(res => {
                     console.log(res);
@@ -137,6 +143,23 @@ class EditTutorial extends Component {
                         >
                             <TextField
                                 fullWidth
+                                helperText="Especifique el titulo en ingles para el tutorial"
+                                label="Title"
+                                margin="dense"
+                                name="name"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.name}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
                                 helperText="Especifique una descripción para el tutorial"
                                 label="Descripción"
                                 margin="dense"
@@ -146,6 +169,25 @@ class EditTutorial extends Component {
                                 onChange={this.handleChange}
                                 required
                                 value={this.state.descripcion}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
+                                helperText="Especifique una descripción en ingles para el tutorial"
+                                label="Description"
+                                margin="dense"
+                                multiline
+                                rowsMax="4"
+                                name="description"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.description}
                                 variant="outlined"
                             />
                         </Grid>

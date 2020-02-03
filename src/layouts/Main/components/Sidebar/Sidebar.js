@@ -7,6 +7,14 @@ import { Divider, Drawer } from '@material-ui/core';
 import PeopleIcon from '@material-ui/icons/People';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import ImageIcon from '@material-ui/icons/Image';
+import BugReportIcon from '@material-ui/icons/BugReport';
+import GroupWorkIcon from '@material-ui/icons/GroupWork';
+import ReceiptIcon from '@material-ui/icons/Receipt';
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+
 import { SidebarNav } from './components';
 
 const useStyles = makeStyles(theme => ({
@@ -51,32 +59,37 @@ const Sidebar = props => {
     {
       title: 'Capturas',
       href: '/capturas',
-      icon: <ImageIcon />
+      icon: <PhotoLibraryIcon />
     },
     {
       title: 'Tutoriales',
       href: '/tutoriales',
-      icon: <TextFieldsIcon />
+      icon: <ReceiptIcon />
     },
     {
       title: 'Grupo especies',
       href: '/grupoEspecies',
-      icon: <TextFieldsIcon />
+      icon: <GroupWorkIcon />
     },
     {
       title: 'Especies',
       href: '/especies',
-      icon: <TextFieldsIcon />
+      icon: <BugReportIcon />
     },
     {
       title: 'Estado de la captura',
       href: '/estadoCaptura',
-      icon: <TextFieldsIcon />
+      icon: <AssessmentIcon />
     },
     {
       title: 'Tipo de usuario',
       href: '/tipoUsuario',
-      icon: <TextFieldsIcon />
+      icon: <SupervisorAccountIcon />
+    },
+    {
+      title: 'Practica',
+      href: '/practica',
+      icon: <PhotoCameraIcon />
     },
     // {
     //   title: 'Products',

@@ -18,7 +18,9 @@ class addTutorial extends Component {
 
     state = {
         nombre: '',
+        name: '',
         descripcion: '',
+        description: '',
         videoId: '',
         duracion: '',
         img: ''
@@ -55,13 +57,15 @@ class addTutorial extends Component {
     onSubmit = () => {
         let data = {
             nombre: this.state.nombre,
-            descripcion: this.state.descripcion,
+            name: this.props.tutorial.name,
+            descripcion: this.props.tutorial.descripcion,
+            description: this.props.tutorial.description,
             videoId: this.state.videoId,
             duracion: this.state.duracion,
             link: this.state.img
         };
 
-        if(this.state.nombre && this.state.descripcion && this.state.videoId && this.state.duracion && this.state.img){
+        if(this.state.nombre && this.state.name && this.state.descripcion && this.state.description && this.state.videoId && this.state.duracion && this.state.img){
             axios.post('http://vm.integralit.cl:13151/api/tutoriales', data)
                 .then(res => {
                     console.log(res);
@@ -114,6 +118,23 @@ class addTutorial extends Component {
                         >
                             <TextField
                                 fullWidth
+                                helperText="Especifique un titulo en ingles para el tutorial"
+                                label="Title"
+                                margin="dense"
+                                name="name"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.name}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
                                 helperText="Especifique una descripción para el tutorial"
                                 label="Descripción"
                                 margin="dense"
@@ -123,6 +144,25 @@ class addTutorial extends Component {
                                 onChange={this.handleChange}
                                 required
                                 value={this.state.descripcion}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
+                                helperText="Especifique una descripción en ingles para el tutorial"
+                                label="Description"
+                                margin="dense"
+                                multiline
+                                rowsMax="4"
+                                name="description"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.description}
                                 variant="outlined"
                             />
                         </Grid>

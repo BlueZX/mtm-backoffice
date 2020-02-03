@@ -126,6 +126,28 @@ class UserList extends Component {
       this.setState({usuarios: updatedList});
   }
 
+  onSearch2 = (event) => {
+    console.log('buscando '+ event.target.value);
+
+      let updatedList = this.state.init;
+
+      updatedList = updatedList.filter((item) => {
+        return item.nombre.toLowerCase().search(event.target.value.toLowerCase()) !== -1;
+      });
+      this.setState({usuarios: updatedList});
+  }
+
+  onSearch3 = (event) => {
+    console.log('buscando '+ event.target.value);
+
+      let updatedList = this.state.init;
+
+      updatedList = updatedList.filter((item) => {
+        return item.email.toLowerCase().search(event.target.value.toLowerCase()) !== -1;
+      });
+      this.setState({usuarios: updatedList});
+  }
+
   render() {
     //const classes = useStyles();
 
@@ -133,12 +155,12 @@ class UserList extends Component {
       <div>
         {this.state.usuarios.length === 0 ? (
           <div>
-            <UsersToolbar adding={this.changeAdding} activos={this.changeActivos} onSearch={this.onSearch} />
+            <UsersToolbar adding={this.changeAdding} activos={this.changeActivos} onSearch={this.onSearch} onSearch3={this.onSearch3}/>
             Sin resultados
           </div>
         ) : (this.state.adding ? <AddUser adding={this.changeAdding} /> : (
           <div>
-            <UsersToolbar adding={this.changeAdding} onSearch={this.onSearch} activos={this.changeActivos}/>
+            <UsersToolbar adding={this.changeAdding} onSearch={this.onSearch} onSearch3={this.onSearch3} activos={this.changeActivos}/>
             <div>
               <UsersTable users={this.state.usuarios} getUsuarios={this.getUser} activos={this.state.activos} />
             </div>
