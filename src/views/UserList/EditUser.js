@@ -13,6 +13,7 @@ import {
     FormControlLabel ,
     Typography
   } from '@material-ui/core';
+  import { withSnackbar  } from 'notistack';
 
 import axios from 'axios';
 
@@ -107,15 +108,44 @@ class EditUser extends Component {
 
         this.clean(data);
 
-        axios.put('http://vm.integralit.cl:13151/api/usuario/' + this.state.id, data)
-            .then(res => {
-                console.log(res);
-                this.props.cancelBtn();
-            })
-            .catch(err => {
-                console.log(err);
-                this.props.cancelBtn();
-            });
+        if(this.state.nick && this.state.email && (this.state.password.length > 7 || data.password === undefined) ){
+            axios.put('http://vm.integralit.cl:13151/api/usuario/' + this.state.id, data)
+                .then(res => {
+                    console.log(res);
+
+                    this.props.enqueueSnackbar('Se ha editado el usuario correctamente', { 
+                        variant: 'success',
+                    });
+                    
+                    this.props.cancelBtn();
+                })
+                .catch(err => {
+                    if(this.state.password !== this.state.password2){
+
+                        this.props.enqueueSnackbar("Las contraseñas deben ser iguales", { 
+                            variant: 'error',
+                        });
+                    }
+                    else{
+                        this.props.enqueueSnackbar(err.message, { 
+                            variant: 'error',
+                        });
+                    }
+                    //this.props.cancelBtn();
+                });
+        }
+        else{
+            if(this.state.password.length < 8 && data.password){
+                // variant could be success, error, warning, info, or default
+                this.props.enqueueSnackbar('la contraseña debe contener como minimo 8 caracteres', { 
+                    variant: 'warning',
+                });
+            }else{
+                this.props.enqueueSnackbar('Se debe llenar todos los campos requeridos', { 
+                    variant: 'warning',
+                });
+            }
+        }
     }
 
     render() {
@@ -179,11 +209,8 @@ class EditUser extends Component {
                                 helperText="Especifique un nombre para el usuario"
                                 label="Nombre"
                                 margin="dense"
-                                multiline
-                                rowsMax="4"
                                 name="nombre"
                                 onChange={this.handleChange}
-                                required
                                 value={this.state.nombre}
                                 variant="outlined"
                             />
@@ -200,7 +227,6 @@ class EditUser extends Component {
                                 margin="dense"
                                 name="apellidos"
                                 onChange={this.handleChange}
-                                required
                                 value={this.state.apellidos}
                                 variant="outlined"
                             />
@@ -215,9 +241,9 @@ class EditUser extends Component {
                                 helperText="Especifique una contraseña para el usuario"
                                 label="Contraseña"
                                 margin="dense"
+                                type="password"
                                 name="password"
                                 onChange={this.handleChange}
-                                required
                                 value={this.state.password}
                                 variant="outlined"
                             />
@@ -235,7 +261,6 @@ class EditUser extends Component {
                                 type="password"
                                 name="password2"
                                 onChange={this.handleChange}
-                                required
                                 value={this.state.password2}
                                 variant="outlined"
                             />
@@ -294,4 +319,4 @@ class EditUser extends Component {
     }
 }
 
-export default EditUser;
+export default withSnackbar(EditUser);

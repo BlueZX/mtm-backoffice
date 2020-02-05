@@ -19,6 +19,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Select from '@material-ui/core/Select';
 
 import axios from 'axios';
+import { withSnackbar  } from 'notistack';
 
 class CambiarEstado extends Component {
 
@@ -127,9 +128,16 @@ class CambiarEstado extends Component {
                 axios.put('http://vm.integralit.cl:13151/api/Captura/'+this.state.id, data)
                 .then(res => {
                     console.log(res);
+                    // variant could be success, error, warning, info, or default
+                    this.props.enqueueSnackbar('Se ha guardado el nuevo estado de la captura', { 
+                        variant: 'success',
+                    });
                     this.props.cancelBtn();
                 })
                 .catch(err => {
+                    this.props.enqueueSnackbar(err, { 
+                        variant: 'error',
+                    });
                     console.log(err);
                 });
         }
@@ -244,4 +252,4 @@ class CambiarEstado extends Component {
     }
 }
 
-export default CambiarEstado;
+export default withSnackbar(CambiarEstado);

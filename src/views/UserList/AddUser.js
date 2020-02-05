@@ -13,6 +13,7 @@ import {
     FormControlLabel ,
     Typography
   } from '@material-ui/core';
+  import { withSnackbar  } from 'notistack';
 
 import axios from 'axios';
 
@@ -60,16 +61,44 @@ class AddUser extends Component {
             // genero: this.state.genero,
         };
 
-        if(this.state.nick && this.state.nombre && this.state.email && this.state.password && this.state.password2){
+        if(this.state.password.length < 8){
+            // variant could be success, error, warning, info, or default
+            this.props.enqueueSnackbar('la contraseña debe contener como minimo 8 caracteres', { 
+                variant: 'warning',
+            });
+        }
+
+        if(this.state.nick && this.state.nombre && this.state.email && this.state.password.length > 7 && this.state.password2){
             axios.post('http://vm.integralit.cl:13151/api/usuario', data)
                 .then(res => {
                     console.log(res);
+
+                    this.props.enqueueSnackbar('Se ha creado el nuevo usuario correctamente', { 
+                        variant: 'success',
+                    });
+                    
                     this.props.adding();
                 })
-                .catch(err => {
-                    console.log(err);
-                    this.props.adding();
+                .catch((err, res) => {
+                    if(this.state.password !== this.state.password2){
+
+                        this.props.enqueueSnackbar("Las contraseñas deben ser iguales", { 
+                            variant: 'error',
+                        });
+                    }
+                    else{
+                        this.props.enqueueSnackbar(err.message, { 
+                            variant: 'error',
+                        });
+                    }
+                    //this.props.adding();
                 });
+        }
+        else{
+            // variant could be success, error, warning, info, or default
+            this.props.enqueueSnackbar('Se debe llenar todos los campos requeridos', { 
+                variant: 'warning',
+            });
         }
     }
     
@@ -171,6 +200,7 @@ class AddUser extends Component {
                                 label="Contraseña"
                                 margin="dense"
                                 name="password"
+                                type="password"
                                 onChange={this.handleChange}
                                 required
                                 value={this.state.password}
@@ -236,4 +266,4 @@ class AddUser extends Component {
     }
 }
 
-export default AddUser;
+export default withSnackbar(AddUser);

@@ -32,6 +32,7 @@ import EditUser from '../../EditUser';
 import { getInitials } from '../../../../helpers';
 
 import axios from 'axios';
+import { withSnackbar  } from 'notistack';
 
 const getModalStyle = () => {
   const top = 50 ;
@@ -126,9 +127,16 @@ const UsersTable = props => {
       .then(res => {
         console.log(res);
         handleCloseDialog();
+        // variant could be success, error, warning, info, or default
+        props.enqueueSnackbar('Se elimino al usuario correctamente!', { 
+          variant: 'success',
+        });
       })
       .catch(err => {
         console.log(err);
+        props.enqueueSnackbar(err, { 
+          variant: 'error',
+        });
         handleCloseDialog();
       });
   }
@@ -282,4 +290,4 @@ UsersTable.propTypes = {
   users: PropTypes.array.isRequired
 };
 
-export default UsersTable;
+export default withSnackbar(UsersTable);
