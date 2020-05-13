@@ -23,6 +23,7 @@ class EditTipoUsuario extends Component {
     state = {
         id: '',
         nombre: '',
+        name: '',
         tipoUsuario: '',
         tipoUsuarioId: '',
         tipoUsuarios: [],
@@ -33,6 +34,7 @@ class EditTipoUsuario extends Component {
         this.setState({
             id : this.props.tutorial._id,
             nombre: this.props.tutorial.nombre,
+            name: this.props.tutorial.name,
             tipoUsuarioId: (this.props.tutorial.tipoUsuario ? this.props.tutorial.tipoUsuario._id : ''),
             tipoUsuarios: this.props.tipoUsuarios || [],
             activo: this.props.tutorial.activo
@@ -74,13 +76,14 @@ class EditTipoUsuario extends Component {
         }
         let data = {
             nombre: this.state.nombre,
+            name: this.state.name,
             tipoUsuario: tuId,
             activo: this.state.activo,
         };
 
         // this.clean(data);
 
-        if(this.state.nombre){
+        if(this.state.nombre && this.state.name){
             axios.put('http://vm.integralit.cl:13151/api/tipoUsuario/'+this.state.id, data)
                 .then(res => {
                     console.log(res);
@@ -148,6 +151,23 @@ class EditTipoUsuario extends Component {
                                     })}
                                 </Select>
                             </FormControl>
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
+                                helperText="Especifique un nombre en ingles para el tipo de usuario"
+                                label="Name"
+                                margin="dense"
+                                name="name"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.name}
+                                variant="outlined"
+                            />
                         </Grid>
 
                         <Grid

@@ -21,6 +21,7 @@ class addTipoUsuario extends Component {
 
     state = {
         nombre: '',
+        name: '',
         tipoUsuario: '',
         tipoUsuarioId: '',
         tipoUsuarios: [],
@@ -64,12 +65,13 @@ class addTipoUsuario extends Component {
     onSubmit = () => {
         let data = {
             nombre: this.state.nombre,
+            name: this.state.name,
             tipoUsuario: this.state.tipoUsuarioId,
         };
 
         this.clean(data);
 
-        if(this.state.nombre){
+        if(this.state.nombre && this.state.name){
             axios.post('http://vm.integralit.cl:13151/api/tipoUsuario', data)
                 .then(res => {
                     console.log(res);
@@ -137,6 +139,24 @@ class addTipoUsuario extends Component {
                                     })}
                                 </Select>
                             </FormControl>
+                        </Grid>
+
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
+                                helperText="Especifique un nombre en ingles para el tipo de usuario"
+                                label="Name"
+                                margin="dense"
+                                name="name"
+                                onChange={this.handleChange}
+                                required
+                                value={this.state.name}
+                                variant="outlined"
+                            />
                         </Grid>
 
 

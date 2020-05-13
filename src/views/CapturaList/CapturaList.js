@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 
 import { UsersToolbar, CapturaTable } from './components';
+import { Button } from '@material-ui/core';
 import axios from 'axios';
 import { Typography } from '@material-ui/core';
+
+import ReactExport from "react-export-excel";
+
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 class CapturaList extends Component {
 
@@ -67,6 +74,25 @@ class CapturaList extends Component {
       this.setState({capturas: updatedList});
   }
 
+  especiesSospechosasText = (esp) => {
+    let text = "";
+    esp.forEach( cap => text += cap.nombre + " , \n" );
+
+    return text;
+  }
+
+  particulasText = (ml,esp) => {
+    let text = "";
+
+    if(ml !== undefined){
+      for(let i=0;i<esp.length;i++){
+        text += ml[i] + " ml de " + esp[i].nombre + ", \n";
+      }
+    }
+
+    return text;
+  }
+
   render() {
 
     return (
@@ -82,7 +108,29 @@ class CapturaList extends Component {
           </div>
         ) : (
           <div>
-        <UsersToolbar onSearch={this.onSearch} onSearch2={this.onSearch2} onSearch3={this.onSearch3} />
+            <UsersToolbar onSearch={this.onSearch} onSearch2={this.onSearch2} onSearch3={this.onSearch3} />
+            <div style={{position: 'absolute', marginTop: -45, marginRight: 6 ,right: 0}}>
+              <ExcelFile filename="Capturas" element={
+                <Button
+                  color="primary"
+                  variant="contained"
+                >
+                  Exportar
+                </Button>}>
+                      <ExcelSheet data={this.state.capturas} name="Capturas">
+                          <ExcelColumn label="Nombre" value={(col) => {return (col.owner.nombre ? col.owner.nombre + " " + col.owner.apellidos : col.owner.nick)}} />
+                          <ExcelColumn label="Correo electronico" value={(col) => {return (col.owner.email ? col.owner.email : " - ")}} />
+                          <ExcelColumn label="Edad" value={(col) => {return (col.owner.edad ? col.owner.edad : " - ")}} />
+                          <ExcelColumn label="Coordenadas" value={(col) => {return (col.region.latitude.toFixed(2) + ", " + col.region.longitude.toFixed(2))}} />
+                          <ExcelColumn label="Fecha en la que se tomo la captura" value={(col) => {return (new Date(col.selectedDate).toLocaleDateString() +"" )}} />
+                          <ExcelColumn label="Estado de revisión" value={(col) => {return (col.estado.nombre + "" )}} />
+                          <ExcelColumn label="Comentario" value={(col) => {return (col.comentario + "" )}} />
+                          <ExcelColumn label="Particulas por ml" value={(col) => {return ( this.particulasText(col.celulasPorML, col.especiesSelected) )}} />
+                          <ExcelColumn label="Especies sospechosas" value={(col) => {return ( this.especiesSospechosasText(col.especiesSelected) )}} />
+                          <ExcelColumn label="Especies detectadas" value={(col) => {return ( this.especiesSospechosasText(col.especiesDetectadas) )}} />
+                      </ExcelSheet>
+              </ExcelFile>
+            </div>
         <div>
           <CapturaTable capturas={this.state.capturas} getCapturas={this.getCapturas} />
         </div>

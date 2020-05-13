@@ -16,10 +16,14 @@ import {
     DialogContentText,
     DialogTitle
   } from '@material-ui/core';
+import Switch from '@material-ui/core/Switch';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormLabel from '@material-ui/core/FormLabel';
 
 import axios from 'axios';
 
@@ -30,8 +34,11 @@ class addPractica extends Component {
         especies:[],
         especiesCount: "0",
         images: '',
+        kind: 0,
         nombreEspecie: "",
         especie: {},
+        esp_id: '',
+        kindd: false,
         openDialog: false
     }
 
@@ -77,6 +84,15 @@ class addPractica extends Component {
             .catch(err => {
                 console.log(err);
             });
+    }
+
+    onChangeKindd = () => {
+        this.setState({
+            kindd: !this.state.kindd,
+            especiesSelected: [],
+            esp_e: ''
+            
+        });
     }
 
     handleChange = event => {
@@ -168,10 +184,22 @@ class addPractica extends Component {
     }
 
     onSubmit = () => {
-        let data = {
-            especiesSelected: this.state.especiesSelected,
-            images: this.state.images
-        };
+        let data = {};
+
+        if(this.state.kindd){
+            data = {
+                especiesSelected: this.state.especiesSelected,
+                images: this.state.images,
+                kind: 1
+            };
+        }
+        else{
+            data = {
+                especiesSelected: this.state.especiesSelected,
+                images: this.state.images,
+                kind: 0
+            };
+        }
 
         if(this.state.especiesSelected && this.state.images){
             axios.post('http://vm.integralit.cl:13151/api/practica', data)
@@ -183,6 +211,37 @@ class addPractica extends Component {
                     console.log(err);
                 });
         }
+    }
+
+    handleChangeRadio = (event) => {
+        let esp = [];
+        let id = event.target.value;
+        let nombre = '';
+        let estado = false;
+        let especiesCount = 0;
+
+        this.setState({
+            esp_id: event.target.value
+        });
+
+        this.state.especies.find( (elem)  => {
+            if(elem.id === event.target.value){
+                id = event.target.value;
+                nombre = elem.nombre
+                estado = true;
+                especiesCount = 1;
+
+                let es = {id, nombre, estado, especiesCount};
+                esp.push(es);
+
+                this.setState({especie: {}, especiesSelected:esp});
+
+            }
+
+            return elem.id === esp._id;
+        });
+
+        console.log(esp);
     }
     
     render() {
@@ -204,6 +263,20 @@ class addPractica extends Component {
                             container
                             spacing={3}
                         >
+                            <Grid
+                                item
+                                md={6}
+                                xs={12}
+                            >
+                                <Typography variant="subtitle1" style={{marginBottom: 10}}>Tipo practica</Typography>
+                                <FormControlLabel
+                                    control={
+                                        <Switch checked={this.state.kindd} onChange={this.onChangeKindd} value={this.state.kindd} />
+                                    }
+                                    label="Quiz"
+                                />
+                            </Grid>
+
                             <Grid
                                 item
                                 md={6}
@@ -238,26 +311,45 @@ class addPractica extends Component {
                                     <img style={{marginTop:10, maxHeight:500,maxWidth:400}} src={this.state.images} alt={this.state.nombre} />
                                 </Grid>
                             </Grid>
-                            <Grid
-                                item
-                                md={6}
-                                xs={12}
-                            >
-                                {/* <Typography variant="subtitle1" style={{marginTop: 20, marginBottom: 10}}>Especies sospechosas</Typography>
-                                {this.state.especiesSospechosa.map( esp => {
-                                    return <Typography key={esp.especieId} variant="body1">{(esp.nombre || esp.especieId) + ", "}</Typography>
-                                })} */}
 
-                                <Typography variant="subtitle1" style={{marginTop: 20, marginBottom: 10}}>Seleccione las especies que estan en la imagen</Typography>
-                                <FormControl>
-                                    <FormGroup>
-                                        {this.state.especies.map( esp => {
-                                            return <FormControlLabel key={esp.id} control={<Checkbox checked={esp.estado} onChange={this.handleChangeCheck(esp)} value={ esp.estado} />} label={esp.nombre} />
-                                        })}
-                                    </FormGroup>
-                                </FormControl>
-                            </Grid>
+                            {this.state.kindd ? 
+                                <Grid
+                                    item
+                                    md={6}
+                                    xs={12}
+                                >
+                                    <FormControl component="fieldset">
+                                        <FormLabel component="legend" style={{marginTop: 20, marginBottom: 10}}>Seleccione la especie que que corresponde con la imagen para el quiz</FormLabel>
+                                        <RadioGroup aria-label="gender" name="gender1" value={this.state.esp_id} onChange={this.handleChangeRadio}>
+                                            {this.state.especies.map( esp => {
+                                                return <FormControlLabel key={esp.id} value={esp.id} control={<Radio />}  label={esp.nombre} />
+                                            })}
+                                        </RadioGroup>
+                                    </FormControl>
+                                </Grid>
+                                :
+                                <Grid
+                                    item
+                                    md={6}
+                                    xs={12}
+                                >
+                                    {/* <Typography variant="subtitle1" style={{marginTop: 20, marginBottom: 10}}>Especies sospechosas</Typography>
+                                    {this.state.especiesSospechosa.map( esp => {
+                                        return <Typography key={esp.especieId} variant="body1">{(esp.nombre || esp.especieId) + ", "}</Typography>
+                                    })} */}
+
+                                    <Typography variant="subtitle1" style={{marginTop: 20, marginBottom: 10}}>Seleccione las especies que estan en la imagen</Typography>
+                                    <FormControl>
+                                        <FormGroup>
+                                            {this.state.especies.map( esp => {
+                                                return <FormControlLabel key={esp.id} control={<Checkbox checked={esp.estado} onChange={this.handleChangeCheck(esp)} value={ esp.estado} />} label={esp.nombre} />
+                                            })}
+                                        </FormGroup>
+                                    </FormControl>
+                                </Grid>
                             
+                            }
+
                         </Grid>
                     </CardContent>
                     <Divider />
